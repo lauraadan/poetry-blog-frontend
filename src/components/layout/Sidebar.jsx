@@ -7,10 +7,10 @@ import {
   Chip,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
-import { posts } from "../../constants/posts";
+import { usePosts } from "../../hooks/usePosts";
 
 export default function Sidebar() {
+  const { posts } = usePosts();
   const latestPosts = [...posts].reverse().slice(0, 5);
 
   const allTags = [...new Set(posts.flatMap((post) => post.tags || []))];

@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 import AvatarBio from "../components/common/AvatarBio";
 import PostCard from "../components/blog/PostCard";
 import Sidebar from "../components/layout/Sidebar";
-import { posts } from "../constants/posts";
+import { usePosts } from "../hooks/usePosts";
 
 import usePagination from "../hooks/usePagination";
 
 export default function TagPage() {
+  const { posts } = usePosts();
   const { tag } = useParams();
 
   const filteredPosts = posts.filter((post) => post.tags?.includes(tag));

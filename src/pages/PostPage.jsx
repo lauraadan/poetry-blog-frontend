@@ -2,10 +2,13 @@ import { Container, Typography, Box } from "@mui/material";
 import { useParams } from "react-router-dom";
 import AvatarBio from "../components/common/AvatarBio";
 import Sidebar from "../components/layout/Sidebar";
-import { posts } from "../constants/posts";
+
 import SharePost from "../components/common/SharePost";
 
+import { usePosts } from "../hooks/usePosts";
+
 export default function PostPage() {
+  const { posts } = usePosts();
   const { id } = useParams();
 
   const post = posts.find((p) => p.id === id);
