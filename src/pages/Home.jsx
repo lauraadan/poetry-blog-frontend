@@ -8,9 +8,11 @@ import Sidebar from "../components/layout/Sidebar";
 import { usePosts } from "../hooks/usePosts";
 
 export default function Home() {
-  const { posts, setSearch } = usePosts();
+  const { posts, setSearch, loading } = usePosts();
 
-  console.log(posts);
+  if (loading) {
+    return <Container>Cargando posts...</Container>;
+  }
 
   return (
     <Container maxWidth="lg">
@@ -21,10 +23,7 @@ export default function Home() {
       <Box
         sx={{
           display: "flex",
-          flexDirection: {
-            xs: "column",
-            md: "row",
-          },
+          flexDirection: { xs: "column", md: "row" },
           gap: 6,
           mt: 4,
           alignItems: "flex-start",
@@ -32,23 +31,13 @@ export default function Home() {
       >
         {/* POSTS */}
 
-        <Box
-          sx={{
-            flex: 3,
-            width: "100%",
-          }}
-        >
+        <Box sx={{ flex: 3 }}>
           <PostList posts={posts} />
         </Box>
 
         {/* SIDEBAR */}
 
-        <Box
-          sx={{
-            flex: 1,
-            width: "100%",
-          }}
-        >
+        <Box sx={{ flex: 1 }}>
           <Sidebar />
         </Box>
       </Box>

@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function usePagination(data, itemsPerPage = 10) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -6,6 +7,13 @@ export default function usePagination(data, itemsPerPage = 10) {
   const pageParam = parseInt(searchParams.get("page")) || 1;
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  // si la página actual es mayor que las páginas disponibles, volver a 1
+  useEffect(() => {
+    if (pageParam > totalPages && totalPages > 0) {
+      setSearchParams({ page: 1 });
+    }
+  }, [data, pageParam, setSearchParams, totalPages]);
 
   const startIndex = (pageParam - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;

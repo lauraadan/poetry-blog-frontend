@@ -90,6 +90,7 @@ export default function Sidebar() {
           <Chip
             component={Link}
             to={`/tag/${tag}`}
+            key={tag}
             clickable
             label={tag}
             size="medium"
