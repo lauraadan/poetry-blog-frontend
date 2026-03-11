@@ -1,7 +1,21 @@
 const API = import.meta.env.VITE_API_URL;
 
-export const getPosts = async () => {
-  const res = await fetch(`${API}/api/posts`);
-  const data = await res.json();
-  return data;
-};
+export async function getPosts() {
+  const res = await fetch(`${API}/api/posts?populate=image`);
+  const json = await res.json();
+
+  return json.data.map((post) => {
+    const attrs = post.attributes;
+
+    return {
+      id: post.id,
+      title: attrs.title,
+      excerpt: attrs.excerpt,
+      content: attrs.content,
+      date: attrs.date,
+      image: attrs.image?.data
+        ? `${API}${attrs.image.data.attributes.url}`
+        : null,
+    };
+  });
+}

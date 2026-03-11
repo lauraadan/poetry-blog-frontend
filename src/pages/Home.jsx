@@ -10,6 +10,8 @@ import { usePosts } from "../hooks/usePosts";
 export default function Home() {
   const { posts, setSearch } = usePosts();
 
+  console.log(posts);
+
   return (
     <Container maxWidth="lg">
       <AvatarBio />
