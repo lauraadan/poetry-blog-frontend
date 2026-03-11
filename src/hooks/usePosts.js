@@ -10,17 +10,28 @@ export function usePosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`${API}/api/posts?populate=*`);
-        const data = await res.json();
+        const res = await fetch(`${API}/api/posts?populate=image`);
+        const json = await res.json();
 
-        const formattedPosts = data.data.map((post) => ({
-          id: post.id,
-          ...post.attributes,
-        }));
+        const formatted = json.data.map((post) => {
+          const attrs = post.attributes;
 
-        setPosts(formattedPosts);
-      } catch (error) {
-        console.error("Error cargando posts:", error);
+          return {
+            id: post.id,
+            title: attrs.title,
+            excerpt: attrs.excerpt,
+            content: attrs.content,
+            date: attrs.date,
+
+            image: attrs.image?.data
+              ? `${API}${attrs.image.data.attributes.url}`
+              : null,
+          };
+        });
+
+        setPosts(formatted);
+      } catch (err) {
+        console.error(err);
       }
     };
 
@@ -29,8 +40,5 @@ export function usePosts() {
 
   const filteredPosts = filterPosts(posts, search);
 
-  return {
-    posts: filteredPosts,
-    setSearch,
-  };
+  return { posts: filteredPosts, setSearch };
 }
