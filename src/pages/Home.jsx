@@ -11,47 +11,45 @@ export default function Home() {
   const { posts, setSearch } = usePosts();
 
   return (
-    <>
-      <Container maxWidth="lg">
-        <AvatarBio />
+    <Container maxWidth="lg">
+      <AvatarBio />
 
-        <SearchBar onSearch={setSearch} />
+      <SearchBar onSearch={setSearch} />
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: {
+            xs: "column",
+            md: "row",
+          },
+          gap: 6,
+          mt: 4,
+          alignItems: "flex-start",
+        }}
+      >
+        {/* POSTS */}
 
         <Box
           sx={{
-            display: "flex",
-            flexDirection: {
-              xs: "column",
-              md: "row",
-            },
-            gap: 6,
-            mt: 4,
-            alignItems: "flex-start",
+            flex: 3,
+            width: "100%",
           }}
         >
-          {/* POSTS */}
-
-          <Box
-            sx={{
-              flex: 3,
-              width: "100%",
-            }}
-          >
-            <PostList posts={posts} />
-          </Box>
-
-          {/* SIDEBAR */}
-
-          <Box
-            sx={{
-              flex: 1,
-              width: "100%",
-            }}
-          >
-            <Sidebar />
-          </Box>
+          <PostList posts={posts} />
         </Box>
-      </Container>
-    </>
+
+        {/* SIDEBAR */}
+
+        <Box
+          sx={{
+            flex: 1,
+            width: "100%",
+          }}
+        >
+          <Sidebar />
+        </Box>
+      </Box>
+    </Container>
   );
 }
