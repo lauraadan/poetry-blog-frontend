@@ -8,12 +8,12 @@ export function usePosts() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    async function fetchPosts() {
       try {
         const res = await fetch(`${API}/api/posts?populate=image`);
         const json = await res.json();
 
-        const formatted = json.data.map((post) => {
+        const formattedPosts = json.data.map((post) => {
           const attrs = post.attributes;
 
           return {
@@ -29,16 +29,19 @@ export function usePosts() {
           };
         });
 
-        setPosts(formatted);
-      } catch (err) {
-        console.error(err);
+        setPosts(formattedPosts);
+      } catch (error) {
+        console.error(error);
       }
-    };
+    }
 
     fetchPosts();
   }, []);
 
   const filteredPosts = filterPosts(posts, search);
 
-  return { posts: filteredPosts, setSearch };
+  return {
+    posts: filteredPosts,
+    setSearch,
+  };
 }
