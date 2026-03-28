@@ -4,19 +4,21 @@ import AvatarBio from "../components/common/AvatarBio";
 import PostCard from "../components/blog/PostCard";
 import Sidebar from "../components/layout/Sidebar";
 import { usePosts } from "../hooks/usePosts";
-
+import Spinner from "../components/common/Spinner";
 import usePagination from "../hooks/usePagination";
 
 export default function TagPage() {
-  const { posts } = usePosts();
+  const { posts, loading } = usePosts();
   const { tag } = useParams();
-
   const filteredPosts = posts.filter((post) => post.tags?.includes(tag));
-
   const { page, totalPages, currentData, changePage } = usePagination(
     filteredPosts,
     10,
   );
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <Container maxWidth="lg" sx={{ mt: 6 }}>

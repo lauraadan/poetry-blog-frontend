@@ -32,7 +32,7 @@ export default function Sidebar() {
           <ListItem key={post.id} disablePadding sx={{ mb: 2 }}>
             <ListItemButton
               component={Link}
-              to={`/post/${post.id}`}
+              to={`/post/${post.slug}`}
               sx={{
                 display: "flex",
                 gap: 2,
@@ -51,7 +51,9 @@ export default function Sidebar() {
                   width: 60,
                   height: 60,
                   minWidth: 60,
-                  backgroundImage: `url(${post.image})`,
+                  backgroundImage: post.imageUrl
+                    ? `url(${post.imageUrl})`
+                    : "none",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   borderRadius: 1,

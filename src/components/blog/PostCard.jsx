@@ -5,7 +5,7 @@ export default function PostCard({ post }) {
   return (
     <Card
       component={Link}
-      to={`/post/${post.id}`}
+      to={`/post/${post.slug}`}
       sx={{
         display: "flex",
         height: 160,
@@ -29,7 +29,7 @@ export default function PostCard({ post }) {
           width: 200,
           minWidth: 200,
           height: "100%",
-          backgroundImage: `url(${post.image})`,
+          backgroundImage: post.imageUrl ? `url(${post.imageUrl})` : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

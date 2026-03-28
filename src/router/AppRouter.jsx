@@ -14,7 +14,7 @@ export default function AppRouter() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/post/:id" element={<PostPage />} />
+        <Route path="/post/:slug" element={<PostPage />} />
         <Route path="/tag/:tag" element={<TagPage />} />
       </Routes>
 

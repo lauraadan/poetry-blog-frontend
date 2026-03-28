@@ -1,5 +1,5 @@
 import { Container, Box } from "@mui/material";
-
+import Spinner from "../components/common/Spinner";
 import AvatarBio from "../components/common/AvatarBio";
 import SearchBar from "../components/blog/SearchBar";
 import PostList from "../components/blog/PostList";
@@ -11,7 +11,7 @@ export default function Home() {
   const { posts, setSearch, loading } = usePosts();
 
   if (loading) {
-    return <Container>Cargando posts...</Container>;
+    return <Spinner />;
   }
 
   return (
