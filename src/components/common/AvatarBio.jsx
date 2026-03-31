@@ -14,25 +14,42 @@ export default function AvatarBio() {
       <CardContent
         sx={{
           display: "flex",
-          gap: 3,
+          gap: { xs: 2, md: 3 },
           alignItems: "center",
+          flexDirection: { xs: "column", sm: "row" }, // 🔥 stack en mobile
+          textAlign: { xs: "center", sm: "left" },
         }}
       >
+        {/* AVATAR */}
         <Avatar
           src={lauraImg}
           alt="Laura Adán"
           sx={{
             width: 120,
             height: 120,
+            display: { xs: "none", sm: "block" }, // 🔥 oculto en mobile
           }}
         />
 
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+        {/* TEXTO */}
+        <Box sx={{ maxWidth: 700 }}>
+          <Typography
+            sx={{
+              fontSize: { xs: "1.3rem", md: "1.6rem" },
+              fontWeight: 600,
+              mb: 1,
+            }}
+          >
             Laura Adán
           </Typography>
 
-          <Typography>
+          <Typography
+            sx={{
+              fontSize: { xs: "0.95rem", md: "1rem" },
+              lineHeight: 1.7,
+              color: "#555",
+            }}
+          >
             Nacida en Tarragona en 1991 y residente en Barcelona desde hace
             años, Laura ha construido su vida entre dos ámbitos aparentemente
             opuestos: la lógica y la emoción. Desarrolladora de software de

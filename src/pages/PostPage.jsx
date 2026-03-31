@@ -1,11 +1,10 @@
 import { Container, Typography, Box, Button } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import AvatarBio from "../components/common/AvatarBio";
 import Sidebar from "../components/layout/Sidebar";
-import SharePost from "../components/common/SharePost";
+import AvatarBio from "../components/common/AvatarBio";
 import Spinner from "../components/common/Spinner";
 import { pb } from "../lib/pocketbase";
 
@@ -18,110 +17,74 @@ export default function PostPage() {
 
   useEffect(() => {
     async function fetchPost() {
-      try {
-        const cleanSlug = decodeURIComponent(slug).trim().toLowerCase();
-
-        const allPosts = await pb.collection("posts").getFullList({
+      const record = await pb
+        .collection("posts")
+        .getFirstListItem(`slug="${slug}"`, {
           requestKey: null,
         });
 
-        console.log("URL slug:", cleanSlug);
-        console.log(
-          "SLUGS DB:",
-          allPosts.map((p) => p.slug),
-        );
+      setPost({
+        ...record,
+        imageUrl: record.image ? pb.files.getURL(record, record.image) : null,
+      });
 
-        const record = allPosts.find(
-          (p) => p.slug?.trim().toLowerCase() === cleanSlug,
-        );
-
-        if (!record) {
-          throw new Error("Post no encontrado");
-        }
-
-        setPost({
-          ...record,
-          date: new Date(record.created).toLocaleDateString("es-ES"),
-          imageUrl: record.image ? pb.files.getURL(record, record.image) : null,
-        });
-      } catch (error) {
-        console.error("Post no encontrado", error);
-        setPost(null);
-      } finally {
-        setLoading(false);
-      }
+      setLoading(false);
     }
 
     fetchPost();
   }, [slug]);
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (!post) {
-    return (
-      <Container maxWidth="lg">
-        <Typography>Post no encontrado</Typography>
-      </Container>
-    );
-  }
+  if (loading) return <Spinner />;
+  if (!post) return <Typography>Post no encontrado</Typography>;
 
   return (
-    <Container maxWidth="lg">
+    <Container
+      maxWidth="lg"
+      sx={{
+        px: { xs: 2, sm: 3, md: 4 },
+      }}
+    >
       <AvatarBio />
 
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
-          mb: 10,
-          my: 10,
-          gap: 6,
-          alignItems: "flex-start",
+          gap: { xs: 3, md: 5 },
+          mt: 4,
         }}
       >
-        {/* CONTENIDO */}
-        <Box sx={{ flex: 3 }}>
-          {/* BOTÓN VOLVER */}
+        {/* CONTENT */}
+        <Box
+          sx={{
+            flex: 3,
+            width: "100%",
+            minWidth: 0, // 🔥 evita overflow en flex
+          }}
+        >
+          {/* BACK */}
           <Button
-            startIcon={<ArrowBackIcon />}
             onClick={() => navigate(-1)}
-            sx={{
-              mb: 3,
-              textTransform: "none",
-              fontWeight: 500,
-              borderRadius: 2,
-              px: 2,
-              color: "#555",
-              "&:hover": {
-                backgroundColor: "#f5f5f5",
-              },
-            }}
+            startIcon={<ArrowBackIcon />}
+            sx={{ mb: 2 }}
           >
             Volver
           </Button>
 
-          {/* HEADER */}
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-              {post.title}
-            </Typography>
+          {/* TITLE */}
+          <Typography
+            sx={{
+              fontSize: { xs: "1.6rem", sm: "1.9rem", md: "2.5rem" },
+              fontWeight: 700,
+              mb: 2,
+              wordBreak: "break-word", // 🔥 clave
+              overflowWrap: "anywhere", // 🔥 evita desbordes raros
+            }}
+          >
+            {post.title}
+          </Typography>
 
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
-                color: "#666",
-              }}
-            >
-              <Typography variant="body2">{post.date}</Typography>
-              <SharePost />
-            </Box>
-          </Box>
-
-          {/* IMAGEN */}
+          {/* IMAGE */}
           {post.imageUrl && (
             <Box
               component="img"
@@ -129,20 +92,29 @@ export default function PostPage() {
               alt={post.title}
               sx={{
                 width: "100%",
-                borderRadius: 3,
-                mb: 4,
+                height: "auto",
+                borderRadius: 2,
+                mb: 3,
               }}
             />
           )}
 
-          {/* CONTENIDO */}
-          <Box sx={{ maxWidth: 720 }}>
+          {/* CONTENT */}
+          <Box
+            sx={{
+              maxWidth: { xs: "100%", md: 720 }, // 🔥 controla ancho lectura
+            }}
+          >
             <Typography
               sx={{
-                fontSize: "1.15rem",
-                lineHeight: 2,
+                fontSize: { xs: "0.95rem", sm: "1rem", md: "1.15rem" },
+                lineHeight: 1.9,
                 color: "#333",
                 whiteSpace: "pre-line",
+
+                // 🔥 MUY IMPORTANTE ↓↓↓
+                wordBreak: "break-word",
+                overflowWrap: "anywhere",
               }}
             >
               {post.content}
@@ -151,7 +123,13 @@ export default function PostPage() {
         </Box>
 
         {/* SIDEBAR */}
-        <Box sx={{ flex: 1, width: "100%" }}>
+        <Box
+          sx={{
+            flex: 1,
+            width: "100%",
+            mt: { xs: 4, md: 0 },
+          }}
+        >
           <Sidebar />
         </Box>
       </Box>

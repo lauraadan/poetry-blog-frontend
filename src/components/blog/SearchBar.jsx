@@ -6,7 +6,10 @@ export default function SearchBar({ onSearch }) {
     <TextField
       fullWidth
       placeholder="Buscar artículos..."
-      sx={{ mb: 4 }}
+      sx={{
+        mb: 3,
+        maxWidth: { xs: "100%", md: 400 },
+      }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
