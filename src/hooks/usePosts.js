@@ -11,8 +11,8 @@ export function usePosts() {
       try {
         const result = await pb.collection("posts").getFullList({
           sort: "-created",
+          requestKey: null,
         });
-
         const formatted = result.map((post) => ({
           ...post,
           date: new Date(post.created).toLocaleDateString("es-ES"),
