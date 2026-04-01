@@ -25,7 +25,6 @@ export default function Home() {
         onChange={(e) => setSearch(e.target.value)}
         sx={{
           mb: 4,
-          maxWidth: { xs: "100%", md: 400 },
         }}
       />
 

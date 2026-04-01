@@ -24,7 +24,7 @@ export default function Sidebar() {
       {/* Últimos artículos */}
 
       <Typography variant="h6" sx={{ mb: 2 }}>
-        Últimos artículos
+        Últimas publicaciones
       </Typography>
 
       <List sx={{ p: 0, mb: 6 }}>

@@ -37,7 +37,7 @@ export default function Header() {
             src={logo}
             alt="logo"
             sx={{
-              width: 80,
+              width: { xs: 60, md: 80 },
               height: "auto",
             }}
           />
@@ -49,13 +49,14 @@ export default function Header() {
               display: "block",
               textDecoration: "none",
               color: "#a21717",
-              fontSize: { xs: "2.2rem", md: "3.5rem" },
+              fontSize: { xs: "1.5rem", md: "3.5rem" },
               fontWeight: 700,
               letterSpacing: "0.02em",
               lineHeight: 1.1,
             }}
           >
-            Los hilos que nos tejen <br />y otras historias
+            Los hilos que nos tejen
+            <br />y otras historias
           </Typography>
         </Box>
 

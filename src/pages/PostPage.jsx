@@ -59,7 +59,7 @@ export default function PostPage() {
           sx={{
             flex: 3,
             width: "100%",
-            minWidth: 0, // 🔥 evita overflow en flex
+            minWidth: 0,
           }}
         >
           {/* BACK */}
@@ -84,21 +84,6 @@ export default function PostPage() {
             {post.title}
           </Typography>
 
-          {/* IMAGE */}
-          {post.imageUrl && (
-            <Box
-              component="img"
-              src={post.imageUrl}
-              alt={post.title}
-              sx={{
-                width: "100%",
-                height: "auto",
-                borderRadius: 2,
-                mb: 3,
-              }}
-            />
-          )}
-
           {/* CONTENT */}
           <Box
             sx={{
@@ -111,8 +96,6 @@ export default function PostPage() {
                 lineHeight: 1.9,
                 color: "#333",
                 whiteSpace: "pre-line",
-
-                // 🔥 MUY IMPORTANTE ↓↓↓
                 wordBreak: "break-word",
                 overflowWrap: "anywhere",
               }}

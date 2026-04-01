@@ -19,7 +19,7 @@ export default function PostCard({ post }) {
           alt={post.title}
           sx={{
             width: { xs: "100%", sm: 200 },
-            height: { xs: 200, sm: "auto" },
+            height: { xs: 100, sm: "auto" },
             objectFit: "cover",
           }}
         />

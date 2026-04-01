@@ -16,7 +16,7 @@ export default function AvatarBio() {
           display: "flex",
           gap: { xs: 2, md: 3 },
           alignItems: "center",
-          flexDirection: { xs: "column", sm: "row" }, // 🔥 stack en mobile
+          flexDirection: { xs: "column", sm: "row" },
           textAlign: { xs: "center", sm: "left" },
         }}
       >
@@ -27,12 +27,12 @@ export default function AvatarBio() {
           sx={{
             width: 120,
             height: 120,
-            display: { xs: "none", sm: "block" }, // 🔥 oculto en mobile
+            display: { xs: "none", sm: "block" },
           }}
         />
 
         {/* TEXTO */}
-        <Box sx={{ maxWidth: 700 }}>
+        <Box>
           <Typography
             sx={{
               fontSize: { xs: "1.3rem", md: "1.6rem" },
