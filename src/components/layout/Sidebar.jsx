@@ -11,7 +11,7 @@ import { usePosts } from "../../hooks/usePosts";
 
 export default function Sidebar() {
   const { posts } = usePosts();
-  const latestPosts = [...posts].reverse().slice(0, 5);
+  const latestPosts = [...posts].slice(0, 5);
 
   const allTags = [...new Set(posts.flatMap((post) => post.tags || []))];
 

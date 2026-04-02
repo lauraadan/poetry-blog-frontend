@@ -7,7 +7,7 @@ export default function PostCard({ post }) {
       sx={{
         display: "flex",
         flexDirection: { xs: "column", sm: "row" },
-        mb: 3,
+        mb: { xs: 6, sm: 4 },
         overflow: "hidden",
       }}
     >
@@ -19,7 +19,7 @@ export default function PostCard({ post }) {
           alt={post.title}
           sx={{
             width: { xs: "100%", sm: 200 },
-            height: { xs: 100, sm: "auto" },
+            height: { xs: 300, sm: "auto" },
             objectFit: "cover",
           }}
         />

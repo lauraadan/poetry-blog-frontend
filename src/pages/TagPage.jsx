@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
 import usePagination from "../hooks/usePagination";
 import PostCard from "../components/blog/PostCard";
+import Spinner from "../components/common/Spinner";
 
 export default function TagPage() {
   const { tag } = useParams();
@@ -10,13 +11,12 @@ export default function TagPage() {
 
   const filteredPosts = posts.filter((p) => p.tags?.includes(tag));
 
-  // 👇 usamos el hook aquí
   const { page, totalPages, currentData, changePage } = usePagination(
     filteredPosts,
     5,
   );
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <Container maxWidth="lg" sx={{ px: { xs: 2, md: 4 } }}>
@@ -24,7 +24,6 @@ export default function TagPage() {
         Tag: {tag}
       </Typography>
 
-      {/* Lista de posts paginados */}
       <Box>
         {currentData.map((post) => (
           <PostCard key={post.id} post={post} />
