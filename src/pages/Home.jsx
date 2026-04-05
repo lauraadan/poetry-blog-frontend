@@ -1,4 +1,11 @@
-import { Container, Box, TextField, Pagination } from "@mui/material";
+import {
+  Container,
+  Box,
+  TextField,
+  Pagination,
+  Typography,
+} from "@mui/material";
+import { useRef, useMemo } from "react";
 
 import { usePosts } from "../hooks/usePosts";
 import usePagination from "../hooks/usePagination";
@@ -9,8 +16,13 @@ import Spinner from "../components/common/Spinner";
 
 export default function Home() {
   const { posts, setSearch, loading } = usePosts();
-
-  const { page, totalPages, currentData, changePage } = usePagination(posts, 5);
+  const postsRef = useRef(null);
+  const memoPosts = useMemo(() => posts, [posts]);
+  const { page, totalPages, currentData, changePage } = usePagination(
+    memoPosts,
+    5,
+    postsRef,
+  );
 
   if (loading) return <Spinner />;
 
@@ -18,14 +30,11 @@ export default function Home() {
     <Container maxWidth="lg" sx={{ px: { xs: 2, md: 4 }, mt: 4 }}>
       <AvatarBio />
 
-      {/* SEARCH */}
       <TextField
         fullWidth
         placeholder="Buscar posts..."
         onChange={(e) => setSearch(e.target.value)}
-        sx={{
-          mb: 4,
-        }}
+        sx={{ mb: 4 }}
       />
 
       <Box
@@ -35,13 +44,15 @@ export default function Home() {
           gap: 4,
         }}
       >
-        {/* POSTS */}
         <Box sx={{ flex: 3 }}>
-          {currentData.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+          <Box ref={postsRef} display="flex" flexDirection="column" gap={3}>
+            {currentData.length === 0 ? (
+              <Typography>No hay posts disponibles.</Typography>
+            ) : (
+              currentData.map((post) => <PostCard key={post.id} post={post} />)
+            )}
+          </Box>
 
-          {/* PAGINATION */}
           {totalPages > 1 && (
             <Box
               sx={{
@@ -54,12 +65,11 @@ export default function Home() {
                 page={page}
                 count={totalPages}
                 onChange={changePage}
+                color="primary"
               />
             </Box>
           )}
         </Box>
-
-        {/* SIDEBAR */}
         <Box sx={{ flex: 1, mt: { xs: 4, md: 0 } }}>
           <Sidebar />
         </Box>

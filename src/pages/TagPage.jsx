@@ -1,19 +1,23 @@
 import { Container, Typography, Box, Pagination } from "@mui/material";
+import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
 import usePagination from "../hooks/usePagination";
 import PostCard from "../components/blog/PostCard";
 import Spinner from "../components/common/Spinner";
+import { useMemo } from "react";
 
 export default function TagPage() {
   const { tag } = useParams();
   const { posts, loading } = usePosts();
-
-  const filteredPosts = posts.filter((p) => p.tags?.includes(tag));
-
+  const filteredPosts = useMemo(() => {
+    return posts.filter((p) => p.tags?.includes(tag));
+  }, [posts, tag]);
+  const postsRef = useRef(null);
   const { page, totalPages, currentData, changePage } = usePagination(
     filteredPosts,
     5,
+    postsRef,
   );
 
   if (loading) return <Spinner />;
@@ -24,7 +28,7 @@ export default function TagPage() {
         Tag: {tag}
       </Typography>
 
-      <Box>
+      <Box ref={postsRef}>
         {currentData.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}

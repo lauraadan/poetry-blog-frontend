@@ -21,8 +21,6 @@ export default function Sidebar() {
         top: 120,
       }}
     >
-      {/* Últimos artículos */}
-
       <Typography variant="h6" sx={{ mb: 2 }}>
         Últimas publicaciones
       </Typography>
@@ -84,8 +82,6 @@ export default function Sidebar() {
           </ListItem>
         ))}
       </List>
-
-      {/* TAGS */}
 
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
         {allTags.map((tag) => (

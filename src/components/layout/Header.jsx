@@ -22,7 +22,6 @@ export default function Header() {
       </AppBar>
 
       <Container maxWidth="md">
-        {/* Imagen + título */}
         <Box
           sx={{
             display: "flex",

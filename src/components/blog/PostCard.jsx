@@ -11,7 +11,6 @@ export default function PostCard({ post }) {
         overflow: "hidden",
       }}
     >
-      {/* IMAGE */}
       {post.imageUrl && (
         <Box
           component="img"
@@ -25,7 +24,6 @@ export default function PostCard({ post }) {
         />
       )}
 
-      {/* CONTENT */}
       <Box sx={{ p: 2 }}>
         <Typography
           component={Link}

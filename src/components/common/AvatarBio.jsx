@@ -20,7 +20,6 @@ export default function AvatarBio() {
           textAlign: { xs: "center", sm: "left" },
         }}
       >
-        {/* AVATAR */}
         <Avatar
           src={lauraImg}
           alt="Laura Adán"
@@ -31,7 +30,6 @@ export default function AvatarBio() {
           }}
         />
 
-        {/* TEXTO */}
         <Box>
           <Typography
             sx={{

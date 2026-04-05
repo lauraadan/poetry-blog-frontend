@@ -54,7 +54,6 @@ export default function PostPage() {
           mt: 4,
         }}
       >
-        {/* CONTENT */}
         <Box
           sx={{
             flex: 3,
@@ -62,7 +61,6 @@ export default function PostPage() {
             minWidth: 0,
           }}
         >
-          {/* BACK */}
           <Button
             onClick={() => navigate(-1)}
             startIcon={<ArrowBackIcon />}
@@ -71,23 +69,21 @@ export default function PostPage() {
             Volver
           </Button>
 
-          {/* TITLE */}
           <Typography
             sx={{
               fontSize: { xs: "1.6rem", sm: "1.9rem", md: "2.5rem" },
               fontWeight: 700,
               mb: 2,
-              wordBreak: "break-word", // 🔥 clave
-              overflowWrap: "anywhere", // 🔥 evita desbordes raros
+              wordBreak: "break-word",
+              overflowWrap: "anywhere",
             }}
           >
             {post.title}
           </Typography>
 
-          {/* CONTENT */}
           <Box
             sx={{
-              maxWidth: { xs: "100%", md: 720 }, // 🔥 controla ancho lectura
+              maxWidth: { xs: "100%", md: 720 },
             }}
           >
             <Typography
@@ -105,7 +101,6 @@ export default function PostPage() {
           </Box>
         </Box>
 
-        {/* SIDEBAR */}
         <Box
           sx={{
             flex: 1,
