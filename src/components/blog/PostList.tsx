@@ -1,10 +1,17 @@
 import { Box, Pagination, Typography } from "@mui/material";
 import PostCard from "./PostCard";
-
 import usePagination from "../../hooks/usePagination";
+import { Post } from "../../types/Post";
 
-export default function PostList({ posts }) {
-  const { page, totalPages, currentData, changePage } = usePagination(posts, 5);
+interface Props {
+  posts: Post[];
+}
+
+export default function PostList({ posts }: Props) {
+  const { page, totalPages, currentData, changePage } = usePagination<Post>(
+    posts,
+    5,
+  );
 
   if (!posts.length) {
     return <Typography>No se encontraron posts.</Typography>;

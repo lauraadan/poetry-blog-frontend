@@ -9,14 +9,16 @@ import {
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { usePostsStore } from "../../store/usePostsStore";
+import { Post } from "../../types/Post";
 
 export default function Sidebar() {
   const posts = usePostsStore((state) => state.posts);
-  const latestPosts = useMemo(() => {
+
+  const latestPosts = useMemo<Post[]>(() => {
     return [...posts].slice(0, 5);
   }, [posts]);
 
-  const allTags = useMemo(() => {
+  const allTags = useMemo<string[]>(() => {
     return [...new Set(posts.flatMap((post) => post.tags || []))];
   }, [posts]);
 
@@ -38,7 +40,6 @@ export default function Sidebar() {
                 alignItems: "flex-start",
                 p: 1,
                 borderRadius: 1,
-
                 "&:hover": {
                   backgroundColor: "#f7f7f7",
                 },
@@ -70,7 +71,9 @@ export default function Sidebar() {
                   {post.title}
                 </Typography>
 
-                <Typography sx={{ fontSize: "0.8rem" }}>{post.date}</Typography>
+                <Typography sx={{ fontSize: "0.8rem" }}>
+                  {post.created}
+                </Typography>
               </Box>
             </ListItemButton>
           </ListItem>

@@ -1,17 +1,22 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-export default function Spinner() {
+interface Props {
+  size?: number;
+  height?: string;
+}
+
+export default function Spinner({ size = 50, height = "60vh" }: Props) {
   return (
     <Box
       sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "60vh",
+        height,
       }}
     >
-      <CircularProgress size={50} />
+      <CircularProgress size={size} />
     </Box>
   );
 }

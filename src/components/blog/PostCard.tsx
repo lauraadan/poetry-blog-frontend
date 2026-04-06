@@ -1,7 +1,12 @@
 import { Card, Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { Post } from "../../types/Post";
 
-export default function PostCard({ post }) {
+interface Props {
+  post: Post;
+}
+
+export default function PostCard({ post }: Props) {
   return (
     <Card
       sx={{

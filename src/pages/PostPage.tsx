@@ -8,7 +8,7 @@ import AvatarBio from "../components/common/AvatarBio";
 import Spinner from "../components/common/Spinner";
 
 export default function PostPage() {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const posts = usePostsStore((state) => state.posts);
   const loading = usePostsStore((state) => state.loading);
