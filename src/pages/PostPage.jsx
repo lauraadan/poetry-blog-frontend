@@ -1,38 +1,26 @@
 import { Container, Typography, Box, Button } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import { usePostsStore } from "../store/usePostsStore";
 import Sidebar from "../components/layout/Sidebar";
 import AvatarBio from "../components/common/AvatarBio";
 import Spinner from "../components/common/Spinner";
-import { pb } from "../lib/pocketbase";
 
 export default function PostPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const posts = usePostsStore((state) => state.posts);
+  const loading = usePostsStore((state) => state.loading);
+  const fetchPosts = usePostsStore((state) => state.fetchPosts);
 
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const post = posts.find((p) => p.slug === slug);
 
   useEffect(() => {
-    async function fetchPost() {
-      const record = await pb
-        .collection("posts")
-        .getFirstListItem(`slug="${slug}"`, {
-          requestKey: null,
-        });
-
-      setPost({
-        ...record,
-        imageUrl: record.image ? pb.files.getURL(record, record.image) : null,
-      });
-
-      setLoading(false);
+    if (!posts.length) {
+      fetchPosts();
     }
-
-    fetchPost();
-  }, [slug]);
+  }, [posts.length, fetchPosts]);
 
   if (loading) return <Spinner />;
   if (!post) return <Typography>Post no encontrado</Typography>;

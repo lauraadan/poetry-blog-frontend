@@ -5,9 +5,8 @@ import {
   Pagination,
   Typography,
 } from "@mui/material";
-import { useRef, useMemo } from "react";
-
-import { usePosts } from "../hooks/usePosts";
+import { useRef, useEffect, useMemo } from "react";
+import { usePostsStore } from "../store/usePostsStore";
 import usePagination from "../hooks/usePagination";
 import PostCard from "../components/blog/PostCard";
 import Sidebar from "../components/layout/Sidebar";
@@ -15,16 +14,35 @@ import AvatarBio from "../components/common/AvatarBio";
 import Spinner from "../components/common/Spinner";
 
 export default function Home() {
-  const { posts, setSearch, loading } = usePosts();
   const postsRef = useRef(null);
-  const memoPosts = useMemo(() => posts, [posts]);
+  const posts = usePostsStore((state) => state.posts);
+  const loading = usePostsStore((state) => state.loading);
+  const error = usePostsStore((state) => state.error);
+  const fetchPosts = usePostsStore((state) => state.fetchPosts);
+  const search = usePostsStore((state) => state.search);
+  const setSearch = usePostsStore((state) => state.setSearch);
+  const filteredPosts = useMemo(() => {
+    if (!search) return posts;
+
+    return posts.filter((post) =>
+      post.title.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [posts, search]);
+
   const { page, totalPages, currentData, changePage } = usePagination(
-    memoPosts,
+    filteredPosts,
     5,
     postsRef,
   );
 
+  useEffect(() => {
+    if (!posts.length) {
+      fetchPosts();
+    }
+  }, [posts.length, fetchPosts]);
+
   if (loading) return <Spinner />;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Container maxWidth="lg" sx={{ px: { xs: 2, md: 4 }, mt: 4 }}>
@@ -33,6 +51,7 @@ export default function Home() {
       <TextField
         fullWidth
         placeholder="Buscar posts..."
+        value={search}
         onChange={(e) => setSearch(e.target.value)}
         sx={{ mb: 4 }}
       />
@@ -70,6 +89,7 @@ export default function Home() {
             </Box>
           )}
         </Box>
+
         <Box sx={{ flex: 1, mt: { xs: 4, md: 0 } }}>
           <Sidebar />
         </Box>

@@ -7,20 +7,21 @@ import {
   Chip,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { usePosts } from "../../hooks/usePosts";
+import { useMemo } from "react";
+import { usePostsStore } from "../../store/usePostsStore";
 
 export default function Sidebar() {
-  const { posts } = usePosts();
-  const latestPosts = [...posts].slice(0, 5);
+  const posts = usePostsStore((state) => state.posts);
+  const latestPosts = useMemo(() => {
+    return [...posts].slice(0, 5);
+  }, [posts]);
 
-  const allTags = [...new Set(posts.flatMap((post) => post.tags || []))];
+  const allTags = useMemo(() => {
+    return [...new Set(posts.flatMap((post) => post.tags || []))];
+  }, [posts]);
 
   return (
-    <Box
-      sx={{
-        top: 120,
-      }}
-    >
+    <Box sx={{ top: 120 }}>
       <Typography variant="h6" sx={{ mb: 2 }}>
         Últimas publicaciones
       </Typography>
@@ -37,7 +38,6 @@ export default function Sidebar() {
                 alignItems: "flex-start",
                 p: 1,
                 borderRadius: 1,
-                transition: "all 0.2s ease",
 
                 "&:hover": {
                   backgroundColor: "#f7f7f7",
@@ -70,13 +70,7 @@ export default function Sidebar() {
                   {post.title}
                 </Typography>
 
-                <Typography
-                  sx={{
-                    fontSize: "0.8rem",
-                  }}
-                >
-                  {post.date}
-                </Typography>
+                <Typography sx={{ fontSize: "0.8rem" }}>{post.date}</Typography>
               </Box>
             </ListItemButton>
           </ListItem>
