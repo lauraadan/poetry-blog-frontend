@@ -7,5 +7,6 @@ export interface Post {
   imageUrl?: string;
   tags?: string[];
   created?: string;
+  createdFormatted?: string;
   excerpt?: string;
 }

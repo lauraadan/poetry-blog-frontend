@@ -48,11 +48,15 @@ export const usePostsStore = create<PostsState>((set, get) => ({
 
       const formatted: Post[] = result.items.map((post) => {
         const createdFormatted = post.created
-          ? new Date(post.created).toLocaleDateString("es-ES", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            })
+          ? (() => {
+              const date = new Date(post.created);
+
+              const day = String(date.getUTCDate()).padStart(2, "0");
+              const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+              const year = date.getUTCFullYear();
+
+              return `${day}/${month}/${year}`;
+            })()
           : "";
 
         return {

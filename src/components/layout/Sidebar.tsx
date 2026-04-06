@@ -72,7 +72,7 @@ export default function Sidebar() {
                 </Typography>
 
                 <Typography sx={{ fontSize: "0.8rem" }}>
-                  {post.created}
+                  {post.createdFormatted}
                 </Typography>
               </Box>
             </ListItemButton>

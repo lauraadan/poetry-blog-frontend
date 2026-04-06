@@ -46,7 +46,7 @@ export default function Home() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
       <AvatarBio />
 
       <TextField
@@ -57,7 +57,14 @@ export default function Home() {
         sx={{ mb: 4 }}
       />
 
-      <Box display="flex" gap={4}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: { xs: 3, md: 5 },
+          mt: 4,
+        }}
+      >
         <Box flex={3}>
           <Box ref={postsRef} display="flex" flexDirection="column" gap={3}>
             {currentData.map((post) => (
@@ -65,10 +72,25 @@ export default function Home() {
             ))}
           </Box>
 
-          <Pagination page={page} count={totalPages} onChange={changePage} />
+          {totalPages > 1 && (
+            <Box display="flex" justifyContent="center" mt={4}>
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={changePage}
+                color="primary"
+              />
+            </Box>
+          )}
         </Box>
 
-        <Box flex={1}>
+        <Box
+          sx={{
+            flex: 1,
+            width: "100%",
+            mt: { xs: 4, md: 0 },
+          }}
+        >
           <Sidebar />
         </Box>
       </Box>
