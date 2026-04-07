@@ -49,14 +49,6 @@ export default function PostPage() {
             minWidth: 0,
           }}
         >
-          <Button
-            onClick={() => navigate(-1)}
-            startIcon={<ArrowBackIcon />}
-            sx={{ mb: 2 }}
-          >
-            Volver
-          </Button>
-
           <Typography
             sx={{
               fontSize: { xs: "1.6rem", sm: "1.9rem", md: "2.5rem" },
@@ -87,6 +79,13 @@ export default function PostPage() {
               {post.content}
             </Typography>
           </Box>
+          <Button
+            onClick={() => navigate(-1)}
+            startIcon={<ArrowBackIcon />}
+            sx={{ mb: 2, mt: 4, p: 0 }}
+          >
+            Volver
+          </Button>
         </Box>
 
         <Box

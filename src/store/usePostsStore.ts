@@ -1,7 +1,8 @@
 import { create } from "zustand";
-import { pb } from "../lib/pocketbase";
 import { Post } from "../types/Post";
-import { PostRecord } from "../types/PostRecord";
+import { getPosts } from "../services/postsService";
+import { getErrorMessage } from "../utils/getErrorMessage";
+import { mapPost } from "../mappers/postMapper";
 
 interface PostsState {
   posts: Post[];
@@ -11,18 +12,6 @@ interface PostsState {
 
   setSearch: (value: string) => void;
   fetchPosts: () => Promise<void>;
-}
-
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-
-  if (typeof error === "string") return error;
-
-  if (typeof error === "object" && error !== null && "message" in error) {
-    return String((error as { message: unknown }).message);
-  }
-
-  return "Error desconocido";
 }
 
 export const usePostsStore = create<PostsState>((set, get) => ({
@@ -41,35 +30,12 @@ export const usePostsStore = create<PostsState>((set, get) => ({
     set({ loading: true, error: null });
 
     try {
-      const result = await pb.collection("posts").getList<PostRecord>(1, 100, {
-        sort: "-created",
-        requestKey: null,
-      });
-
-      const formatted: Post[] = result.items.map((post) => {
-        const createdFormatted = post.created
-          ? (() => {
-              const date = new Date(post.created);
-
-              const day = String(date.getUTCDate()).padStart(2, "0");
-              const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-              const year = date.getUTCFullYear();
-
-              return `${day}/${month}/${year}`;
-            })()
-          : "";
-
-        return {
-          ...post,
-          createdFormatted,
-          imageUrl: post.image ? pb.files.getURL(post, post.image) : undefined,
-        };
-      });
+      const items = await getPosts();
+      const formatted: Post[] = items.map(mapPost);
 
       set({ posts: formatted, loading: false });
     } catch (err) {
       const message = getErrorMessage(err);
-
       set({ error: message, loading: false });
     }
   },
