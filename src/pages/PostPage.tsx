@@ -1,7 +1,14 @@
-import { Container, Typography, Box, Button } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Box,
+  Button,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { usePostsStore } from "../store/usePostsStore";
 import Sidebar from "../components/layout/Sidebar";
@@ -14,7 +21,7 @@ export default function PostPage() {
   const posts = usePostsStore((state) => state.posts);
   const loading = usePostsStore((state) => state.loading);
   const fetchPosts = usePostsStore((state) => state.fetchPosts);
-
+  const [open, setOpen] = useState(false);
   const post = posts.find((p) => p.slug === slug);
 
   useEffect(() => {
@@ -26,7 +33,7 @@ export default function PostPage() {
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      alert("URL copiada al portapapeles ✅");
+      setOpen(true);
     } catch (err) {
       console.error("Error al copiar:", err);
     }
@@ -36,91 +43,107 @@ export default function PostPage() {
   if (!post) return <Typography>Post no encontrado</Typography>;
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{
-        px: { xs: 2, sm: 3, md: 4 },
-      }}
-    >
-      <AvatarBio />
-
-      <Box
+    <>
+      <Container
+        maxWidth="lg"
         sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: { xs: 3, md: 5 },
-          mt: 4,
+          px: { xs: 2, sm: 3, md: 4 },
         }}
       >
+        <AvatarBio />
+
         <Box
           sx={{
-            flex: 3,
-            width: "100%",
-            minWidth: 0,
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: { xs: 3, md: 5 },
+            mt: 4,
           }}
         >
-          <Typography
-            sx={{
-              fontSize: { xs: "1.6rem", sm: "1.9rem", md: "2.5rem" },
-              fontWeight: 700,
-              mb: 2,
-              wordBreak: "break-word",
-              overflowWrap: "anywhere",
-            }}
-          >
-            {post.title}
-          </Typography>
-
-          <Button
-            onClick={handleShare}
-            startIcon={<ShareIcon />}
-            sx={{
-              mt: 2,
-              mb: 2,
-              color: "#a21717",
-              textTransform: "none",
-            }}
-          >
-            Compartir
-          </Button>
-
           <Box
             sx={{
-              maxWidth: { xs: "100%", md: 720 },
+              flex: 3,
+              width: "100%",
+              minWidth: 0,
             }}
           >
             <Typography
               sx={{
-                fontSize: { xs: "0.95rem", sm: "1rem", md: "1.15rem" },
-                lineHeight: 1.9,
-                color: "#333",
-                whiteSpace: "pre-line",
+                fontSize: { xs: "1.6rem", sm: "1.9rem", md: "2.5rem" },
+                fontWeight: 700,
+                mb: 2,
                 wordBreak: "break-word",
                 overflowWrap: "anywhere",
               }}
             >
-              {post.content}
+              {post.title}
             </Typography>
-          </Box>
-          <Button
-            onClick={() => navigate(-1)}
-            startIcon={<ArrowBackIcon />}
-            sx={{ mb: 2, mt: 4, p: 0, color: "#a21717" }}
-          >
-            Volver
-          </Button>
-        </Box>
 
-        <Box
-          sx={{
-            flex: 1,
-            width: "100%",
-            mt: { xs: 4, md: 0 },
-          }}
-        >
-          <Sidebar />
+            <Button
+              onClick={handleShare}
+              startIcon={<ShareIcon />}
+              sx={{
+                mt: 2,
+                mb: 2,
+                color: "#a21717",
+                textTransform: "none",
+              }}
+            >
+              Compartir
+            </Button>
+
+            <Box
+              sx={{
+                maxWidth: { xs: "100%", md: 720 },
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: { xs: "0.95rem", sm: "1rem", md: "1.15rem" },
+                  lineHeight: 1.9,
+                  color: "#333",
+                  whiteSpace: "pre-line",
+                  wordBreak: "break-word",
+                  overflowWrap: "anywhere",
+                }}
+              >
+                {post.content}
+              </Typography>
+            </Box>
+            <Button
+              onClick={() => navigate(-1)}
+              startIcon={<ArrowBackIcon />}
+              sx={{ mb: 2, mt: 4, p: 0, color: "#a21717" }}
+            >
+              Volver
+            </Button>
+          </Box>
+
+          <Box
+            sx={{
+              flex: 1,
+              width: "100%",
+              mt: { xs: 4, md: 0 },
+            }}
+          >
+            <Sidebar />
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          URL copiada al portapapeles ✅
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
