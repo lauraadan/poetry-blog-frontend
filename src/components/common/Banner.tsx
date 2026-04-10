@@ -1,28 +1,20 @@
 import { Box, Typography, Button, Card } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { pb } from "../../lib/pocketbase";
-import { Post } from "../../types/Post";
-import { mapPost } from "../../mappers/postMapper"; // 👈 IMPORTANTE
-import { PostRecord } from "../../types/PostRecord";
+import { usePostsStore } from "../../store/usePostsStore";
+
+const POST_ID = "8m7kh33zszirk4o";
 
 export default function Banner() {
-  const [post, setPost] = useState<Post | null>(null);
+  const post = usePostsStore((s) => s.posts.find((p) => p.id === POST_ID));
+
+  const fetchPostById = usePostsStore((s) => s.fetchPostById);
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const data = await pb
-          .collection("posts")
-          .getOne<PostRecord>("8m7kh33zszirk4o");
-
-        setPost(mapPost(data));
-      } catch (err) {
-        console.error("Error fetching post:", err);
-      }
-    };
-    fetchPost();
-  }, []);
+    if (!post) {
+      fetchPostById(POST_ID);
+    }
+  }, [post, fetchPostById]);
 
   if (!post) return null;
 
@@ -35,7 +27,6 @@ export default function Banner() {
         overflow: "hidden",
       }}
     >
-      {/* Imagen */}
       {post.imageUrl && (
         <Box
           component="img"
@@ -61,8 +52,6 @@ export default function Banner() {
       >
         <Typography
           sx={{
-            textDecoration: "none",
-            color: "inherit",
             fontSize: { xs: "1.3rem", md: "1.8rem" },
             fontWeight: 700,
           }}

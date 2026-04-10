@@ -9,3 +9,8 @@ export async function getPosts(): Promise<PostRecord[]> {
 
   return result.items;
 }
+
+export async function getPostById(id: string): Promise<PostRecord> {
+  const record = await pb.collection("posts").getOne<PostRecord>(id);
+  return record;
+}
