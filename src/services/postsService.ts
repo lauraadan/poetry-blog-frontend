@@ -10,7 +10,16 @@ export async function getPosts(): Promise<PostRecord[]> {
   return result.items;
 }
 
+export async function getFeatures(): Promise<PostRecord[]> {
+  const result = await pb.collection("features").getList<PostRecord>(1, 100, {
+    sort: "-created",
+    requestKey: null,
+  });
+
+  return result.items;
+}
+
 export async function getPostById(id: string): Promise<PostRecord> {
-  const record = await pb.collection("posts").getOne<PostRecord>(id);
+  const record = await pb.collection("features").getOne<PostRecord>(id);
   return record;
 }

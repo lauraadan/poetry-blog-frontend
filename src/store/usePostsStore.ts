@@ -13,7 +13,6 @@ interface PostsState {
   setSearch: (value: string) => void;
 
   fetchPosts: () => Promise<void>;
-  fetchPostById: (id: string) => Promise<Post | null>;
 }
 
 export const usePostsStore = create<PostsState>((set, get) => ({
@@ -24,7 +23,6 @@ export const usePostsStore = create<PostsState>((set, get) => ({
 
   setSearch: (value) => set({ search: value }),
 
-  // 🔥 LISTADO
   fetchPosts: async () => {
     const { posts } = get();
 
@@ -40,25 +38,6 @@ export const usePostsStore = create<PostsState>((set, get) => ({
     } catch (err) {
       const message = getErrorMessage(err);
       set({ error: message, loading: false });
-    }
-  },
-
-  fetchPostById: async (id: string) => {
-    const { posts } = get();
-    const existing = posts.find((p) => p.id === id);
-    if (existing) return existing;
-
-    try {
-      const data = await getPostById(id);
-      const mapped = mapPost(data);
-
-      set({ posts: [...posts, mapped] });
-
-      return mapped;
-    } catch (err) {
-      const message = getErrorMessage(err);
-      set({ error: message });
-      return null;
     }
   },
 }));

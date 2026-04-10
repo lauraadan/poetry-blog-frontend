@@ -1,22 +1,24 @@
 import { Box, Typography, Button, Card } from "@mui/material";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { usePostsStore } from "../../store/usePostsStore";
+import { useFeatureStore } from "../../store/useFeatureStore";
 
-const POST_ID = "8m7kh33zszirk4o";
+const POST_ID = "godfm3ubu4597m2";
 
 export default function Banner() {
-  const post = usePostsStore((s) => s.posts.find((p) => p.id === POST_ID));
+  const feature = useFeatureStore((s) =>
+    s.features.find((p) => p.id === POST_ID),
+  );
 
-  const fetchPostById = usePostsStore((s) => s.fetchPostById);
+  const fetchPostById = useFeatureStore((s) => s.fetchPostById);
 
   useEffect(() => {
-    if (!post) {
+    if (!feature) {
       fetchPostById(POST_ID);
     }
-  }, [post, fetchPostById]);
+  }, [feature, fetchPostById]);
 
-  if (!post) return null;
+  if (!feature) return null;
 
   return (
     <Card
@@ -27,11 +29,11 @@ export default function Banner() {
         overflow: "hidden",
       }}
     >
-      {post.imageUrl && (
+      {feature.imageUrl && (
         <Box
           component="img"
-          src={post.imageUrl}
-          alt={post.title}
+          src={feature.imageUrl}
+          alt={feature.title}
           sx={{
             width: { xs: "100%", sm: 200 },
             height: { xs: "100%", sm: 200 },
@@ -56,7 +58,7 @@ export default function Banner() {
             fontWeight: 700,
           }}
         >
-          {post.title}
+          {feature.title}
         </Typography>
 
         <Typography
@@ -69,13 +71,13 @@ export default function Banner() {
             overflow: "hidden",
           }}
         >
-          {post.excerpt}
+          {feature.excerpt}
         </Typography>
 
         <Box>
           <Button
             component={Link}
-            to={`/post/${post.slug}`}
+            to={`/post/${feature.slug}`}
             variant="outlined"
             size="small"
             sx={{

@@ -14,21 +14,28 @@ import { usePostsStore } from "../store/usePostsStore";
 import Sidebar from "../components/layout/Sidebar";
 import AvatarBio from "../components/common/AvatarBio";
 import Spinner from "../components/common/Spinner";
+import { useFeatureStore } from "../store/useFeatureStore";
 
 export default function PostPage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const posts = usePostsStore((state) => state.posts);
+  const features = useFeatureStore((state) => state.features);
   const loading = usePostsStore((state) => state.loading);
   const fetchPosts = usePostsStore((state) => state.fetchPosts);
+  const fetchFeature = useFeatureStore((state) => state.fetchFeatures);
   const [open, setOpen] = useState(false);
   const post = posts.find((p) => p.slug === slug);
+  const featurePost = features.find((p) => p.slug === slug);
 
   useEffect(() => {
     if (!posts.length) {
       fetchPosts();
     }
-  }, [posts.length, fetchPosts]);
+    if (!features.length) {
+      fetchFeature();
+    }
+  }, [posts.length, fetchPosts, features.length, fetchFeature]);
 
   const handleShare = async () => {
     try {
@@ -40,7 +47,7 @@ export default function PostPage() {
   };
 
   if (loading) return <Spinner />;
-  if (!post) return <Typography>Post no encontrado</Typography>;
+  if (!post && !featurePost) return <Typography>Post no encontrado</Typography>;
 
   return (
     <>
@@ -76,7 +83,7 @@ export default function PostPage() {
                 overflowWrap: "anywhere",
               }}
             >
-              {post.title}
+              {post?.title || featurePost?.title}
             </Typography>
 
             <Button
@@ -107,7 +114,7 @@ export default function PostPage() {
                   overflowWrap: "anywhere",
                 }}
               >
-                {post.content}
+                {post?.content || featurePost?.content}
               </Typography>
             </Box>
             <Button
