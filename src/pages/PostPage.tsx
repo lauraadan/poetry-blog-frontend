@@ -1,4 +1,5 @@
 import { Container, Typography, Box, Button } from "@mui/material";
+import ShareIcon from "@mui/icons-material/Share";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -21,6 +22,15 @@ export default function PostPage() {
       fetchPosts();
     }
   }, [posts.length, fetchPosts]);
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert("URL copiada al portapapeles ✅");
+    } catch (err) {
+      console.error("Error al copiar:", err);
+    }
+  };
 
   if (loading) return <Spinner />;
   if (!post) return <Typography>Post no encontrado</Typography>;
@@ -60,6 +70,19 @@ export default function PostPage() {
           >
             {post.title}
           </Typography>
+
+          <Button
+            onClick={handleShare}
+            startIcon={<ShareIcon />}
+            sx={{
+              mt: 2,
+              mb: 2,
+              color: "#a21717",
+              textTransform: "none",
+            }}
+          >
+            Compartir
+          </Button>
 
           <Box
             sx={{
