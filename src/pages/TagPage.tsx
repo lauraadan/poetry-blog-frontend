@@ -61,7 +61,7 @@ export default function TagPage() {
       <Button
         onClick={() => navigate(-1)}
         startIcon={<ArrowBackIcon />}
-        sx={{ mb: 2 }}
+        sx={{ mb: 2, color: "#a21717" }}
       >
         Volver
       </Button>

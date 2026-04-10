@@ -5,10 +5,11 @@ import {
   Pagination,
   Typography,
 } from "@mui/material";
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { usePostsStore } from "../store/usePostsStore";
 import usePagination from "../hooks/usePagination";
 import PostCard from "../components/blog/PostCard";
+import Banner from "../components/common/Banner";
 import Sidebar from "../components/layout/Sidebar";
 import AvatarBio from "../components/common/AvatarBio";
 import Spinner from "../components/common/Spinner";
@@ -48,6 +49,7 @@ export default function Home() {
   return (
     <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
       <AvatarBio />
+      <Banner />
 
       <TextField
         fullWidth

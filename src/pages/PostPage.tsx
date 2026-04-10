@@ -82,7 +82,7 @@ export default function PostPage() {
           <Button
             onClick={() => navigate(-1)}
             startIcon={<ArrowBackIcon />}
-            sx={{ mb: 2, mt: 4, p: 0 }}
+            sx={{ mb: 2, mt: 4, p: 0, color: "#a21717" }}
           >
             Volver
           </Button>
