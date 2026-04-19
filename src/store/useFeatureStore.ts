@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Post } from "../types/Post";
-import { getFeatures, getPostById } from "../services/postsService";
+import { getFeatures } from "../services/postsService";
+import { getPostById } from "../services/getPostbyIdService";
 import { getErrorMessage } from "../utils/getErrorMessage";
 import { mapPost } from "../mappers/postMapper";
 

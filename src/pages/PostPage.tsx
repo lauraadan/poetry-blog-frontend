@@ -24,7 +24,10 @@ export default function PostPage() {
   const loading = usePostsStore((state) => state.loading);
   const fetchPosts = usePostsStore((state) => state.fetchPosts);
   const fetchFeature = useFeatureStore((state) => state.fetchFeatures);
+
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
+
   const post = posts.find((p) => p.slug === slug);
   const featurePost = features.find((p) => p.slug === slug);
 
@@ -41,8 +44,8 @@ export default function PostPage() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setOpen(true);
-    } catch (err) {
-      console.error("Error al copiar:", err);
+    } catch {
+      setError(true);
     }
   };
 
@@ -117,6 +120,7 @@ export default function PostPage() {
                 {post?.content || featurePost?.content}
               </Typography>
             </Box>
+
             <Button
               onClick={() => navigate(-1)}
               startIcon={<ArrowBackIcon />}
@@ -137,6 +141,8 @@ export default function PostPage() {
           </Box>
         </Box>
       </Container>
+
+      {/* Snackbar éxito */}
       <Snackbar
         open={open}
         autoHideDuration={2000}
@@ -149,6 +155,22 @@ export default function PostPage() {
           sx={{ width: "100%" }}
         >
           URL copiada al portapapeles ✅
+        </Alert>
+      </Snackbar>
+
+      {/* Snackbar error */}
+      <Snackbar
+        open={error}
+        autoHideDuration={2000}
+        onClose={() => setError(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setError(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          No se pudo copiar la URL ❌
         </Alert>
       </Snackbar>
     </>

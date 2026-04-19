@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import { Box, Pagination, Typography } from "@mui/material";
 import PostCard from "./PostCard";
 import usePagination from "../../hooks/usePagination";
@@ -7,21 +8,29 @@ interface Props {
   posts: Post[];
 }
 
-export default function PostList({ posts }: Props) {
+const PostList: React.FC<Props> = ({ posts }) => {
+  const memoPosts = useMemo(() => posts, [posts]);
+
   const { page, totalPages, currentData, changePage } = usePagination<Post>(
-    posts,
+    memoPosts,
     5,
   );
 
-  if (!posts.length) {
+  const renderedPosts = useMemo(
+    () =>
+      currentData.map((post) => (
+        <PostCard key={`post-${post.id}`} post={post} />
+      )),
+    [currentData],
+  );
+
+  if (!memoPosts.length) {
     return <Typography>No se encontraron posts.</Typography>;
   }
 
   return (
     <>
-      {currentData.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+      {renderedPosts}
 
       {totalPages > 1 && (
         <Box
@@ -41,4 +50,6 @@ export default function PostList({ posts }: Props) {
       )}
     </>
   );
-}
+};
+
+export default PostList;

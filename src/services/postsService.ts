@@ -18,8 +18,3 @@ export async function getFeatures(): Promise<PostRecord[]> {
 
   return result.items;
 }
-
-export async function getPostById(id: string): Promise<PostRecord> {
-  const record = await pb.collection("features").getOne<PostRecord>(id);
-  return record;
-}

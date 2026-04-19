@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import { Card, Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Post } from "../../types/Post";
@@ -6,7 +7,26 @@ interface Props {
   post: Post;
 }
 
-export default function PostCard({ post }: Props) {
+const PostCard: React.FC<Props> = ({ post }) => {
+  const postLink = useMemo(() => `/post/${post.slug}`, [post.slug]);
+
+  const imageElement = useMemo(() => {
+    if (!post.imageUrl) return null;
+
+    return (
+      <Box
+        component="img"
+        src={post.imageUrl}
+        alt={post.title}
+        sx={{
+          width: { xs: "100%", sm: 200 },
+          height: { xs: 300, sm: 200 },
+          objectFit: "cover",
+        }}
+      />
+    );
+  }, [post.imageUrl, post.title]);
+
   return (
     <Card
       sx={{
@@ -16,23 +36,12 @@ export default function PostCard({ post }: Props) {
         overflow: "hidden",
       }}
     >
-      {post.imageUrl && (
-        <Box
-          component="img"
-          src={post.imageUrl}
-          alt={post.title}
-          sx={{
-            width: { xs: "100%", sm: 200 },
-            height: { xs: 300, sm: 200 },
-            objectFit: "cover",
-          }}
-        />
-      )}
+      {imageElement}
 
       <Box sx={{ p: 2 }}>
         <Typography
           component={Link}
-          to={`/post/${post.slug}`}
+          to={postLink}
           sx={{
             textDecoration: "none",
             color: "inherit",
@@ -47,4 +56,6 @@ export default function PostCard({ post }: Props) {
       </Box>
     </Card>
   );
-}
+};
+
+export default React.memo(PostCard);

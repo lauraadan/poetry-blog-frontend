@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Header from "../components/layout/Header";
@@ -7,7 +8,7 @@ import Home from "../pages/Home";
 import PostPage from "../pages/PostPage";
 import TagPage from "../pages/TagPage";
 
-export default function AppRouter() {
+const AppRouter: React.FC = () => {
   return (
     <>
       <Header />
@@ -21,4 +22,6 @@ export default function AppRouter() {
       <Footer />
     </>
   );
-}
+};
+
+export default AppRouter;
